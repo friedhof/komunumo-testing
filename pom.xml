@@ -163,11 +163,6 @@
             <version>1.9.0</version>
         </dependency>
         <dependency>
-            <groupId>com.vaadin.componentfactory</groupId>
-            <artifactId>multi-combo-box-flow</artifactId>
-            <version>23.1.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.vaadin.reportui</groupId>
             <artifactId>report-ui</artifactId>
             <version>4.0.2</version>

@@ -18,9 +18,9 @@
 
 package org.komunumo.ui.view.admin.events;
 
-import com.vaadin.componentfactory.multiselect.MultiComboBox;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.richtexteditor.RichTextEditor;
@@ -80,10 +80,10 @@ public final class EventDialog extends EditDialog<Event> {
         final var type = new Select<EventType>();
         final var title = new TextField("Title");
         final var subtitle = new TextField("Subtitle");
-        final var speaker = new MultiComboBox<EventSpeakerEntity>("Speaker");
-        final var organizer = new MultiComboBox<Member>("Organizer");
+        final var speaker = new MultiSelectComboBox<EventSpeakerEntity>("Speaker");
+        final var organizer = new MultiSelectComboBox<Member>("Organizer");
         final var description = new RichTextEditor();
-        final var keyword = new MultiComboBox<KeywordEntity>("Keyword");
+        final var keyword = new MultiSelectComboBox<KeywordEntity>("Keyword");
         final var agenda = new RichTextEditor();
         final var level = new Select<EventLevel>();
         final var language = new Select<EventLanguage>();
@@ -111,12 +111,12 @@ public final class EventDialog extends EditDialog<Event> {
         });
         subtitle.setValueChangeMode(EAGER);
         speaker.setItemLabelGenerator(EventSpeakerEntity::fullName);
-        speaker.setItems(databaseService.getAllEventSpeakers());
+        speaker.setItems(databaseService.getAllEventSpeakers().toList());
         organizer.setItemLabelGenerator(value -> String.format("%s %s", value.getFirstName(), value.getLastName()));
-        organizer.setItems(databaseService.getAllAdmins());
+        organizer.setItems(databaseService.getAllAdmins().toList());
         organizer.setRequiredIndicatorVisible(true);
         keyword.setItemLabelGenerator(KeywordEntity::keyword);
-        keyword.setItems(databaseService.getAllKeywords());
+        keyword.setItems(databaseService.getAllKeywords().toList());
         level.setLabel("Level");
         level.setItems(EventLevel.values());
         language.setLabel("Language");
