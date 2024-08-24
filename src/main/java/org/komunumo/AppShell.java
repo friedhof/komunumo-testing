@@ -31,7 +31,7 @@ import java.io.Serial;
 
 @Push
 @Theme(value = "komunumo")
-@PWA(name = "Komunumo", shortName = "Komunumo", iconPath = "")
+@PWA(name = "Komunumo", shortName = "Komunumo")
 @NpmPackage(value = "lumo-css-framework", version = "^4.0.10")
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 @SuppressWarnings({"unused", "ClassCanBeRecord"})
