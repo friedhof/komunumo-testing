@@ -307,6 +307,9 @@ public final class JUGSImporter {
                     continue;
                 }
                 final var memberId = result.getLong("personen_id");
+                if (memberId == 0) {
+                    continue;
+                }
                 final var registerDate = getRegisterDate(result.getString("aenderung"), result.getString("anmdatum"));
                 final var noShow = "Online".equalsIgnoreCase(event.get().getLocation())
                         || result.getString("noshow") != null && result.getString("noshow").equals("1");
