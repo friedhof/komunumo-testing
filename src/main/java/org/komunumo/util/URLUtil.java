@@ -80,6 +80,8 @@ public final class URLUtil {
             try {
                 final var request = HttpRequest.newBuilder(new URI(url))
                         .GET()
+                        .version(HttpClient.Version.HTTP_1_1)
+                        .header("User-Agent", "Komunumo/1.0-SNAPSHOT")
                         .timeout(Duration.of(5, SECONDS))
                         .build();
                 final var client = HttpClient.newBuilder()
