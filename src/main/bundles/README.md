@@ -29,4 +29,4 @@ you can switch Flow to use Vite development server (default in Vaadin 23.3 and e
    </configuration>
 ```
 
-Read more [about Vaadin development mode](https://vaadin.com/docs/next/configuration/development-mode/#pre-compiled-front-end-bundle-for-faster-start-up).
+Read more [about Vaadin development mode](https://vaadin.com/docs/next/flow/configuration/development-mode#precompiled-bundle).
