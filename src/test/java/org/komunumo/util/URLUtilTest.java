@@ -19,6 +19,10 @@
 package org.komunumo.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -26,72 +30,85 @@ import java.lang.reflect.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings({ "HttpUrlsUsage", "PMD.AvoidDuplicateLiterals" })
 class URLUtilTest {
 
-    @Test
-    @SuppressWarnings("HttpUrlsUsage")
-    void extractLink() {
-        assertEquals("", URLUtil.extractLink(""));
-        assertEquals("", URLUtil.extractLink("There is no link in this text!"));
-        assertEquals("http://komunumo.org", URLUtil.extractLink("Go to http://komunumo.org and try it out!"));
-        assertEquals("https://komunumo.org", URLUtil.extractLink("Go to https://komunumo.org and try it out!"));
-        assertEquals("http://komunumo.org/", URLUtil.extractLink("Go to http://komunumo.org/ and try it out!"));
-        assertEquals("https://komunumo.org/", URLUtil.extractLink("Go to https://komunumo.org/ and try it out!"));
-        assertEquals("https://komunumo.org/test", URLUtil.extractLink("Go to https://komunumo.org/test and try it out!"));
-        assertEquals("https://komunumo.org/test/", URLUtil.extractLink("Go to https://komunumo.org/test/ and try it out!"));
-        assertEquals("https://komunumo.org/test.html", URLUtil.extractLink("Go to https://komunumo.org/test.html and try it out!"));
-        assertEquals("https://komunumo.org/test.php", URLUtil.extractLink("Go to https://komunumo.org/test.php and try it out!"));
-        assertEquals("https://komunumo.org/test.pdf", URLUtil.extractLink("Go to https://komunumo.org/test.pdf and try it out!"));
-        assertEquals("https://komunumo.org/test.pdf", URLUtil.extractLink("Go to \"https://komunumo.org/test.pdf\" and try it out!"));
-        assertEquals("https://komunumo.org/test.pdf", URLUtil.extractLink("Go to 'https://komunumo.org/test.pdf' and try it out!"));
+    @ParameterizedTest
+    @CsvSource({
+            "'',''",
+            "There is no link in this text!,''",
+            "Go to http://komunumo.org and try it out!,http://komunumo.org",
+            "Go to https://komunumo.org and try it out!,https://komunumo.org",
+            "Go to http://komunumo.org/ and try it out!,http://komunumo.org/",
+            "Go to https://komunumo.org/ and try it out!,https://komunumo.org/",
+            "Go to https://komunumo.org/test and try it out!,https://komunumo.org/test",
+            "Go to https://komunumo.org/test/ and try it out!,https://komunumo.org/test/",
+            "Go to https://komunumo.org/test.html and try it out!,https://komunumo.org/test.html",
+            "Go to https://komunumo.org/test.php and try it out!,https://komunumo.org/test.php",
+            "Go to https://komunumo.org/test.pdf and try it out!,https://komunumo.org/test.pdf",
+            "Go to \"https://komunumo.org/test.pdf\" and try it out!,https://komunumo.org/test.pdf",
+            "Go to 'https://komunumo.org/test.pdf' and try it out!,https://komunumo.org/test.pdf"
+    })
+    void extractLink(final String text, final String expected) {
+        assertEquals(expected, URLUtil.extractLink(text));
     }
 
-    @Test
-    void createReadableUrl() {
-        assertEquals("hans-im-glueck", URLUtil.createReadableUrl("Hans im Glück"));
-        assertEquals("i-have_a-reallyamazingidea", URLUtil.createReadableUrl("I have_a-really\\Amazing§§Idea"));
-        assertEquals("count-from-1-to-3", URLUtil.createReadableUrl("Count from 1 to 3"));
+    @ParameterizedTest
+    @CsvSource({
+            "Hans im Glück,hans-im-glueck",
+            "I have_a-really\\Amazing§§Idea,i-have_a-reallyamazingidea",
+            "Count from 1 to 3,count-from-1-to-3"
+    })
+    void createReadableUrl(final String text, final String expected) {
+        assertEquals(expected, URLUtil.createReadableUrl(text));
     }
 
-    @Test
-    void getDomainFromUrl() {
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("komunumo.org"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("www.komunumo.org"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("http://komunumo.org"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("http://komunumo.org/"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("http://www.komunumo.org/"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("https://komunumo.org/"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("https://komunumo.org/index.html"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("https://komunumo.org/subdir"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("https://komunumo.org/subdir/"));
-        assertEquals("komunumo.org", URLUtil.getDomainFromUrl("https://komunumo.org/subdir/index.html"));
-        assertEquals("", URLUtil.getDomainFromUrl(""));
+    @ParameterizedTest
+    @CsvSource({
+            "'',''",
+            "komunumo.org,komunumo.org",
+            "www.komunumo.org,komunumo.org",
+            "http://komunumo.org,komunumo.org",
+            "http://komunumo.org/,komunumo.org",
+            "http://www.komunumo.org/,komunumo.org",
+            "https://komunumo.org/,komunumo.org",
+            "https://komunumo.org/index.html,komunumo.org",
+            "https://komunumo.org/subdir,komunumo.org",
+            "https://komunumo.org/subdir/,komunumo.org",
+            "https://komunumo.org/subdir/index.html,komunumo.org"
+    })
+    void getDomainFromUrl(final String url, final String expected) {
+        assertEquals(expected, URLUtil.getDomainFromUrl(url));
     }
 
-    @Test
-    @SuppressWarnings("HttpUrlsUsage")
-    void isValid() {
-        assertFalse(URLUtil.isValid(null));
-        assertFalse(URLUtil.isValid(""));
-        assertFalse(URLUtil.isValid("   "));
-        assertFalse(URLUtil.isValid("test"));
-        assertFalse(URLUtil.isValid("http://non-existing.domain/"));
-        assertFalse(URLUtil.isValid("komunumo.org"));
-        assertFalse(URLUtil.isValid("www.komunumo.org"));
-        assertFalse(URLUtil.isValid("http://"));
-        assertFalse(URLUtil.isValid("https://"));
-        assertTrue(URLUtil.isValid("http://komunumo.org"));
-        assertTrue(URLUtil.isValid("http://komunumo.org/"));
-        assertTrue(URLUtil.isValid("http://www.komunumo.org"));
-        assertTrue(URLUtil.isValid("http://www.komunumo.org/"));
-        assertTrue(URLUtil.isValid("https://komunumo.org"));
-        assertTrue(URLUtil.isValid("https://komunumo.org/"));
-        assertTrue(URLUtil.isValid("https://www.komunumo.org"));
-        assertTrue(URLUtil.isValid("https://www.komunumo.org/"));
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            "", "   ",
+            "test", "http://non-existing.domain/",
+            "komunumo.org", "www.komunumo.org",
+            "http://", "https://" })
+    void isValidFalse(final String url) {
+        assertFalse(URLUtil.isValid(url));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "http://komunumo.org",
+            "http://komunumo.org/",
+            "http://www.komunumo.org",
+            "http://www.komunumo.org/",
+            "https://komunumo.org",
+            "https://komunumo.org/",
+            "https://www.komunumo.org",
+            "https://www.komunumo.org/"
+    })
+    void isValidTrue(final String url) {
+        assertTrue(URLUtil.isValid(url));
     }
 
     @Test
@@ -104,7 +121,7 @@ class URLUtilTest {
                 constructor.newInstance();
             }
         }).getCause();
-        assertTrue(cause instanceof IllegalStateException);
+        assertInstanceOf(IllegalStateException.class, cause);
         assertEquals("Utility class", cause.getMessage());
     }
 
