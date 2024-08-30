@@ -59,7 +59,7 @@ Only members with administrative privileges are allowed to login to the backend.
 
 ```sql
 insert into member (id, first_name, last_name, email, registration_date, membership_begin, admin, account_active)
-values (1, 'First name', 'Last name', 'email@domain.tld', now(), null, true, true);
+values (1, 'First name', 'Last name', 'email@domain.tld', now(), now(), true, true);
 ```
 
 Then, open `http://localhost:8080/admin`, enter your email address, and click on "I forgot my password" to start the password reset process (you will receive a one time password via email), and set your own admin password.
