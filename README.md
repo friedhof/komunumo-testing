@@ -125,6 +125,7 @@ While developing, sometimes it is very useful to reset the database manually. Yo
 
 ```
 mvn flyway:clean \
+    -D'flyway.cleanDisabled'='false' \
     -D'flyway.user'='johndoe' \
     -D'flyway.password'='verysecret' \
     -D'flyway.url'='jdbc:mariadb://localhost:3306/komunumo?serverTimezone\=Europe/Zurich'
