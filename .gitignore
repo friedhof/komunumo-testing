@@ -61,5 +61,5 @@ types.d.ts
 index.html
 
 # Files used by Docker and MariaDB tu run the database locally
-.env
-.mariadb/data
+/.env
+/.mariadb/data
