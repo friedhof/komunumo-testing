@@ -46,7 +46,7 @@ public class WebsiteMenu extends Nav {
         add(new RouterLink("Home", HomeView.class));
         add(new RouterLink("Events", EventsView.class));
         add(new RouterLink("Members", MembersView.class));
-        add(new RouterLink("Sponsors", SponsorsView.class));
+        add(new RouterLink("Sponsoring Members", SponsorsView.class));
         add(new RouterLink("FAQ", FaqView.class));
         if (authenticatedUser.get().isPresent() && authenticatedUser.get().get().getAdmin()) {
             add(new Anchor("/admin", "Admin", AnchorTarget.TOP));

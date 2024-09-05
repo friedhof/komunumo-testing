@@ -58,7 +58,7 @@ public final class SponsorsView extends ContentBlock implements AfterNavigationO
     private final DatabaseService databaseService;
 
     public SponsorsView(@NotNull final DatabaseService databaseService) {
-        super("Sponsors");
+        super("Supporting Members");
         this.databaseService = databaseService;
         addClassName("sponsors-view");
     }
@@ -74,7 +74,7 @@ public final class SponsorsView extends ContentBlock implements AfterNavigationO
         final String pageTitle;
         if (url.equals("sponsors")) {
             showSponsors();
-            pageTitle = "Sponsors";
+            pageTitle = "Supporting Members";
         } else {
             final var page = loadPage(databaseService, url);
             pageTitle = page.getTitle();
