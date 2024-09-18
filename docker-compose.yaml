@@ -19,4 +19,4 @@ services:
     image: adminer
     restart: always
     ports:
-      - "3000:8080"
+      - "4000:8080"
