@@ -20,12 +20,12 @@ package org.komunumo.ui.home;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H1;
 import org.junit.jupiter.api.Test;
-import org.komunumo.ui.KaribuTest;
+import org.komunumo.ui.KaribuTestBase;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class HomeViewIT extends KaribuTest {
+class HomeViewIT extends KaribuTestBase {
 
     @Test
     void homeViewTest() {

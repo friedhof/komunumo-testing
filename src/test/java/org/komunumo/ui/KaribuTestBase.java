@@ -37,7 +37,7 @@ import org.springframework.test.annotation.DirtiesContext;
  */
 @SpringBootTest
 @DirtiesContext
-public abstract class KaribuTest {
+public abstract class KaribuTestBase {
 
     private static Routes routes;
 
