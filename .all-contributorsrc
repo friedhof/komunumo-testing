@@ -1,0 +1,56 @@
+{
+  "projectName": "komunumo",
+  "projectOwner": "McPringle",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
+  "contributors": [
+    {
+      "login": "McPringle",
+      "name": "Marcus Fihlon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1254039?v=4",
+      "profile": "https://github.com/McPringle",
+      "contributions": [
+        "projectManagement",
+        "ideas",
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "Interactiondesigner",
+      "name": "Interactiondesigner",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17220369?v=4",
+      "profile": "https://github.com/Interactiondesigner",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "knoobie",
+      "name": "Knoobie",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3968629?v=4",
+      "profile": "https://github.com/knoobie",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "shreegilliorkar",
+      "name": "Shree Gillorkar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70030205?v=4",
+      "profile": "https://github.com/shreegilliorkar",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": false
+}
