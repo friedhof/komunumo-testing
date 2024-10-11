@@ -15,23 +15,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.komunumo.ui.home;
+package org.komunumo.ui.website.home;
 
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import org.junit.jupiter.api.Test;
-import org.komunumo.ui.KaribuTestBase;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.komunumo.ui.website.WebsiteLayout;
 
-import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+@Route(value = "", layout = WebsiteLayout.class)
+@AnonymousAllowed
+public class HomeView extends Div {
 
-class HomeViewIT extends KaribuTestBase {
-
-    @Test
-    void homeViewTest() {
-        UI.getCurrent().navigate(HomeView.class);
-        final var title = _get(H1.class).getText();
-        assertEquals("Java User Group Switzerland", title);
+    public HomeView() {
+        setId("home-view");
+        add(new H1("Home"));
     }
 
 }
