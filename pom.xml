@@ -76,6 +76,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <jooq.version>3.19.13</jooq.version>
         <maven.version>3.9.9</maven.version>
         <vaadin.version>24.4.13</vaadin.version>
     </properties>
@@ -141,6 +142,27 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -155,6 +177,17 @@
             <artifactId>karibu-testing-v10-spring</artifactId>
             <version>2.1.8</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.20.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mariadb</artifactId>
+            <version>1.20.2</version>
         </dependency>
     </dependencies>
 
@@ -303,6 +336,62 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <executions>
+                    <execution>
+                        <id>jooq-codegen</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jdbc>
+                        <driver>org.testcontainers.jdbc.ContainerDatabaseDriver</driver>
+                        <url>jdbc:tc:mariadb:lts:///ignored?allowMultiQueries=true&amp;TC_TMPFS=/testtmpfs:rw&amp;TC_INITSCRIPT=file:${basedir}/src/main/resources/db/migration/V1_0_0__initialization.sql</url>
+                        <user>test</user>
+                        <password>test</password>
+                    </jdbc>
+                    <generator>
+                        <database>
+                            <name>org.jooq.meta.mariadb.MariaDBDatabase</name>
+                            <inputSchema>test</inputSchema>
+                            <outputSchemaToDefault>true</outputSchemaToDefault>
+                            <forcedTypes>
+                                <forcedType>
+                                    <name>BOOLEAN</name>
+                                    <includeTypes>(?i:TINYINT\(1\))</includeTypes>
+                                </forcedType>
+                            </forcedTypes>
+                            <properties>
+                                <property>
+                                    <key>sort</key>
+                                    <value>semantic</value>
+                                </property>
+                            </properties>
+                        </database>
+                        <generate>
+                            <validationAnnotations>true</validationAnnotations>
+                            <javaTimeTypes>true</javaTimeTypes>
+                        </generate>
+                        <target>
+                            <packageName>org.komunumo.data.db</packageName>
+                            <directory>target/generated-sources/jooq</directory>
+                        </target>
+                    </generator>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-meta-extensions</artifactId>
+                        <version>${jooq.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
