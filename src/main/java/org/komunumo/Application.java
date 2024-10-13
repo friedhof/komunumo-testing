@@ -17,6 +17,10 @@
  */
 package org.komunumo;
 
+import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.theme.Theme;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,8 +29,11 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 /**
  * The entry point of the Spring Boot application.
  */
+@Push
+@Theme(value = "komunumo")
+@PWA(name = "Komunumo - Open Source Community Manager", shortName = "Komunumo")
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 
     public static void main(@NotNull final String... args) {
         SpringApplication.run(Application.class, args);
