@@ -29,7 +29,7 @@ public class DatabaseService implements DSLContextGetter, ConfigurationGetter, C
 
     private final DSLContext dsl;
 
-    private Configuration configuration;
+    private final Configuration configuration;
 
     public DatabaseService(@NotNull final DSLContext dsl) {
         this.dsl = dsl;

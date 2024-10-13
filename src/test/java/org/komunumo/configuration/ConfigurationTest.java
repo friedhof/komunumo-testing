@@ -17,24 +17,34 @@
  */
 package org.komunumo.configuration;
 
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public final class Configuration {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    private final Map<String, String> data;
+class ConfigurationTest {
 
-    public Configuration(@NotNull final Map<String, String> data) {
-        this.data = data;
+    private static Configuration configuration;
+
+    @BeforeAll
+    static void initializeConfiguration() {
+        final Map<String, String> configData = new HashMap<>();
+        configData.put("website.url", "https://foobar.test");
+        configData.put("website.name", "Foobar");
+        configuration = new Configuration(configData);
     }
 
-    public String getWebsiteBaseUrl() {
-        return data.getOrDefault("website.url", "http://localhost:8080");
+    @Test
+    void testWebsiteBaseUrl() {
+        assertEquals("https://foobar.test", configuration.getWebsiteBaseUrl());
     }
 
-    public String getWebsiteName() {
-        return data.getOrDefault("website.name", "");
+    @Test
+    void testWebsiteName() {
+        assertEquals("Foobar", configuration.getWebsiteName());
     }
 
 }
