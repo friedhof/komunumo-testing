@@ -31,7 +31,7 @@ class HomeViewIT extends KaribuTestBase {
     void homeViewTest() {
         UI.getCurrent().navigate(HomeView.class);
         final var title = _get(H1.class).getText();
-        assertEquals("Home", title);
+        assertEquals("Java User Group Switzerland", title);
     }
 
 }
