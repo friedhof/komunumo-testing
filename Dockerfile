@@ -21,7 +21,7 @@ COPY --chown=komunumo:komunumo package.json ./
 COPY --chown=komunumo:komunumo package-lock.json* pnpm-lock.yaml* webpack.config.js* ./
 
 # Build the production package, assuming that we validated the version before so no need for running tests again
-RUN ./mvnw clean package -DskipTests -Dcheckstyle.skip -Pproduction
+RUN ./mvnw clean package -DskipTests -Dcheckstyle.skip -Pproduction -e
 
 # Running stage: the part that is used for running the application
 FROM eclipse-temurin:21
