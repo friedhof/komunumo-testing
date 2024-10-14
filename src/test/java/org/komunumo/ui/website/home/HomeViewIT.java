@@ -18,7 +18,7 @@
 package org.komunumo.ui.website.home;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import org.junit.jupiter.api.Test;
 import org.komunumo.ui.KaribuTestBase;
 
@@ -30,8 +30,8 @@ class HomeViewIT extends KaribuTestBase {
     @Test
     void homeViewTest() {
         UI.getCurrent().navigate(HomeView.class);
-        final var title = _get(H1.class).getText();
-        assertEquals("Java User Group Switzerland", title);
+        final var title = _get(H2.class, spec -> spec.withText("Home")).getText();
+        assertEquals("Home", title);
     }
 
 }

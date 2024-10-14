@@ -15,21 +15,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.komunumo.ui.website.home;
+package org.komunumo.ui.website;
 
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.komunumo.ui.website.WebsiteLayout;
+import com.vaadin.flow.component.html.Span;
 
-@Route(value = "", layout = WebsiteLayout.class)
-@AnonymousAllowed
-public class HomeView extends Div {
+import static org.komunumo.util.FormatterUtil.formatNumber;
 
-    public HomeView() {
-        setId("home-view");
-        add(new H2("Home"));
+public class WebsiteStats extends Div {
+
+    public WebsiteStats() {
+        final var stats = new Stats(8, "bits are a byte");
+        final var number = new Span(new Text(formatNumber(stats.number())));
+        number.addClassName("number");
+        final var text = new Span(new Text(stats.text()));
+        text.addClassName("text");
+
+        add(number, text);
+        addClassName("website-stats");
     }
+
+    private record Stats(int number, String text) { }
 
 }

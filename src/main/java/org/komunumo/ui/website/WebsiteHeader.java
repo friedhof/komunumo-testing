@@ -18,7 +18,6 @@
 package org.komunumo.ui.website;
 
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import org.jetbrains.annotations.NotNull;
 import org.komunumo.data.service.DatabaseService;
@@ -27,10 +26,10 @@ public class WebsiteHeader extends Header {
 
     public WebsiteHeader(@NotNull final DatabaseService databaseService) {
         setId("website-header");
-        final var configuration = databaseService.configuration();
+
         add(
-                new Anchor(configuration.getWebsiteBaseUrl(),
-                new H1(configuration.getWebsiteName()))
+                new Anchor("/", new WebsiteLogo(databaseService)),
+                new WebsiteStats()
         );
     }
 

@@ -37,4 +37,32 @@ public final class Configuration {
         return data.getOrDefault("website.name", "");
     }
 
+    public String getWebsiteContactAddress() {
+        return data.getOrDefault("website.contact.address", "");
+    }
+
+    public String getWebsiteContactEmail() {
+        return data.getOrDefault("website.contact.email", "noreply@localhost");
+    }
+
+    public String getWebsiteCopyright() {
+        return data.getOrDefault("website.copyright", "");
+    }
+
+    public String getWebsiteAboutText() {
+        return data.getOrDefault("website.about.text", "");
+    }
+
+    public String getWebsiteLogoTemplate() {
+        return data.getOrDefault("website.logo.template", "");
+    }
+
+    public int getWebsiteMinLogoNumber() {
+        return Integer.parseInt(data.getOrDefault("website.logo.min", "0"));
+    }
+
+    public int getWebsiteMaxLogoNumber() {
+        return Integer.parseInt(data.getOrDefault("website.logo.max", "0"));
+    }
+
 }

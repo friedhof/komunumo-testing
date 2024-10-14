@@ -17,20 +17,28 @@
  */
 package org.komunumo.ui.website;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Paragraph;
 import org.junit.jupiter.api.Test;
+import org.komunumo.ui.KaribuTestBase;
+import org.komunumo.ui.website.home.HomeView;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class WebsiteLayoutTest {
+class WebsiteLayoutTest extends KaribuTestBase {
 
     @Test
     void testRouterLayoutContent() {
-        final var websiteLayout = new WebsiteLayout();
-        assertEquals(1, websiteLayout.getComponentCount());
+        UI.getCurrent().navigate(HomeView.class);
+        final var uiParent = UI.getCurrent().getCurrentView().getParent().orElseThrow()
+                .getParent().orElseThrow();
 
-        final var main = websiteLayout.getComponentAt(0);
-        assertEquals(0, main.getElement().getChildCount());
+        final var websiteLayout = (WebsiteLayout) uiParent;
+        assertEquals(3, websiteLayout.getComponentCount());
+
+        final var main = (Main) websiteLayout.getComponentAt(1);
+        assertEquals(1, main.getElement().getChildCount());
 
         websiteLayout.showRouterLayoutContent(new Paragraph("foo"));
         assertEquals(1, main.getElement().getChildCount());

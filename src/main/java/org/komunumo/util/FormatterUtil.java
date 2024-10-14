@@ -15,21 +15,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.komunumo.ui.website.home;
+package org.komunumo.util;
 
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.komunumo.ui.website.WebsiteLayout;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
-@Route(value = "", layout = WebsiteLayout.class)
-@AnonymousAllowed
-public class HomeView extends Div {
+public final class FormatterUtil {
 
-    public HomeView() {
-        setId("home-view");
-        add(new H2("Home"));
+    private static final DecimalFormat LARGE_NUMBERS = createLargeNumberFormatter();
+
+    private static DecimalFormat createLargeNumberFormatter() {
+        final var formatter = (DecimalFormat) NumberFormat.getInstance();
+        final var symbols = formatter.getDecimalFormatSymbols();
+
+        symbols.setGroupingSeparator('\'');
+        formatter.setDecimalFormatSymbols(symbols);
+
+        return formatter;
+    }
+
+    public static String formatNumber(final long number) {
+        return LARGE_NUMBERS.format(number);
+    }
+
+    private FormatterUtil() {
+        throw new IllegalStateException("Utility class");
     }
 
 }
