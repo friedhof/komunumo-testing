@@ -25,7 +25,7 @@ import org.komunumo.data.service.getter.DSLContextGetter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DatabaseService implements DSLContextGetter, ConfigurationGetter, ConfigurationService {
+public class DatabaseService implements DSLContextGetter, ConfigurationGetter, ConfigurationService, EventService {
 
     private final DSLContext dsl;
 
