@@ -17,6 +17,47 @@
  */
 package org.komunumo.data.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.komunumo.data.db.tables.records.EventRecord;
+import org.komunumo.data.entity.Event;
 import org.komunumo.data.service.getter.DSLContextGetter;
 
-interface EventService extends DSLContextGetter { }
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
+
+import static org.komunumo.data.db.tables.Event.EVENT;
+
+interface EventService extends DSLContextGetter {
+
+    @NotNull
+    default Stream<Event> upcomingEvents() {
+        return dsl().selectFrom(EVENT)
+                .where(EVENT.DATE.greaterOrEqual(LocalDateTime.now().withHour(0).withMinute(0)))
+                .orderBy(EVENT.DATE.asc())
+                .fetch()
+                .stream()
+                .map(this::mapEventRecord)
+                .filter(event -> event.duration() != null)
+                .filter(event -> {
+                    final var now = LocalDateTime.now();
+                    final var endDate = event.date().plus(event.duration());
+                    return endDate.isAfter(now);
+                });
+    }
+
+    @NotNull
+    private Event mapEventRecord(@NotNull final EventRecord eventRecord) {
+        final var duration = eventRecord.getDuration() == null ? null :
+                Duration.ofHours(eventRecord.getDuration().getHour())
+                        .plusMinutes(eventRecord.getDuration().getMinute());
+        return new Event(
+                eventRecord.getId(),
+                eventRecord.getTitle(),
+                eventRecord.getSubtitle(),
+                eventRecord.getDescription(),
+                eventRecord.getDate(),
+                duration);
+    }
+
+}

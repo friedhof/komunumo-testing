@@ -15,24 +15,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.komunumo.ui.website.home;
 
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Paragraph;
 import org.jetbrains.annotations.NotNull;
-import org.komunumo.data.service.DatabaseService;
-import org.komunumo.ui.website.WebsiteLayout;
+import org.komunumo.data.entity.Event;
 
-@Route(value = "", layout = WebsiteLayout.class)
-@AnonymousAllowed
-public class HomeView extends Div {
+public class EventPreview extends Div {
 
-    public HomeView(@NotNull final DatabaseService databaseService) {
-        setId("home-view");
-        add(new H2("Home"));
-        add(new EventsPreviewContainer(databaseService));
+    public EventPreview(@NotNull final Event event) {
+        super();
+        addClassName("event-preview");
+
+        add(new H3(event.title()));
+        add(new H4(event.subtitle()));
+        add(new Paragraph(event.description()));
+
+        add(new Paragraph(event.date().toString()));
+        add(new Paragraph(event.duration().toString()));
     }
 
 }

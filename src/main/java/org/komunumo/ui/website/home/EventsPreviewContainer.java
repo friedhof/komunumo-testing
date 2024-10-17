@@ -17,22 +17,19 @@
  */
 package org.komunumo.ui.website.home;
 
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.jetbrains.annotations.NotNull;
 import org.komunumo.data.service.DatabaseService;
-import org.komunumo.ui.website.WebsiteLayout;
 
-@Route(value = "", layout = WebsiteLayout.class)
-@AnonymousAllowed
-public class HomeView extends Div {
+public class EventsPreviewContainer extends HorizontalLayout {
 
-    public HomeView(@NotNull final DatabaseService databaseService) {
-        setId("home-view");
-        add(new H2("Home"));
-        add(new EventsPreviewContainer(databaseService));
+    public EventsPreviewContainer(@NotNull final DatabaseService databaseService) {
+        addClassName("events-preview-container");
+
+        final var events = databaseService.upcomingEvents().toList();
+        events.stream()
+                .map(EventPreview::new)
+                .forEach(this::add);
     }
 
 }
