@@ -51,6 +51,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
+      - name: Build with Maven
+        run: ./mvnw clean package -Pproduction -e
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
