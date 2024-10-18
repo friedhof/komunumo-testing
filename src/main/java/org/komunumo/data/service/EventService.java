@@ -48,8 +48,8 @@ interface EventService extends DSLContextGetter {
 
     @NotNull
     private Event mapEventRecord(@NotNull final EventRecord eventRecord) {
-        final var duration = eventRecord.getDuration() == null ? null :
-                Duration.ofHours(eventRecord.getDuration().getHour())
+        final var duration = eventRecord.getDuration() == null ? null
+                : Duration.ofHours(eventRecord.getDuration().getHour())
                         .plusMinutes(eventRecord.getDuration().getMinute());
         return new Event(
                 eventRecord.getId(),
