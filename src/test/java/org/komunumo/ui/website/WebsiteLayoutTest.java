@@ -17,14 +17,21 @@
  */
 package org.komunumo.ui.website;
 
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.dom.Element;
 import org.junit.jupiter.api.Test;
 import org.komunumo.ui.KaribuTestBase;
 import org.komunumo.ui.website.home.HomeView;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class WebsiteLayoutTest extends KaribuTestBase {
 
@@ -52,4 +59,22 @@ class WebsiteLayoutTest extends KaribuTestBase {
         assertEquals(0, main.getElement().getChildCount());
     }
 
+    @Test
+    void testRouterLayoutContentException() {
+        UI.getCurrent().navigate(HomeView.class);
+        final var uiParent = UI.getCurrent().getCurrentView().getParent().orElseThrow()
+                .getParent().orElseThrow();
+
+        final var websiteLayout = (WebsiteLayout) uiParent;
+        assertEquals(3, websiteLayout.getComponentCount());
+
+        final var content = mock(HasElement.class);
+        final var element = mock(Element.class);
+        when(content.getElement()).thenReturn(element);
+        when(element.getComponent()).thenReturn(Optional.empty());
+
+        final var exception = assertThrows(IllegalArgumentException.class,
+                () -> websiteLayout.showRouterLayoutContent(content));
+        assertEquals("WebsiteLayout content must be a Component", exception.getMessage());
+    }
 }
