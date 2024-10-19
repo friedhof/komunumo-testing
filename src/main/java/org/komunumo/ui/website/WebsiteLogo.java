@@ -39,10 +39,14 @@ public class WebsiteLogo extends Image {
         this.logoUrlTemplate = configuration.getWebsiteLogoTemplate();
         this.minLogoNumber = configuration.getWebsiteMinLogoNumber();
         this.maxLogoNumber = configuration.getWebsiteMaxLogoNumber();
-        this.randomizeLogo = minLogoNumber != 0 || maxLogoNumber != 0;
+        this.randomizeLogo = minLogoNumber < maxLogoNumber;
 
         if (logoUrlTemplate == null || logoUrlTemplate.isBlank()) {
             throw new InvalidApplicationConfigurationException("Missing website logo URL template!");
+        }
+
+        if (maxLogoNumber < minLogoNumber) {
+            throw new InvalidApplicationConfigurationException("Max website logo number must be higher than min website logo number!");
         }
 
         setAlt("Website Logo");

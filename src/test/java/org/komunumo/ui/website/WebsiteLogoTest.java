@@ -88,4 +88,18 @@ class WebsiteLogoTest {
         assertEquals("Missing website logo URL template!", exception.getMessage());
     }
 
+    @Test
+    void testMaxLogoNumberLowerThanMinLogoNumber() {
+        final var configuration = mock(Configuration.class);
+        when(configuration.getWebsiteLogoTemplate()).thenReturn("test_%02d.svg");
+        when(configuration.getWebsiteMinLogoNumber()).thenReturn(1);
+        when(configuration.getWebsiteMaxLogoNumber()).thenReturn(0);
+        final var databaseService = mock(DatabaseService.class);
+        when(databaseService.configuration()).thenReturn(configuration);
+
+        final var exception = assertThrows(InvalidApplicationConfigurationException.class,
+                () -> new WebsiteLogo(databaseService));
+        assertEquals("Max website logo number must be higher than min website logo number!", exception.getMessage());
+    }
+
 }
