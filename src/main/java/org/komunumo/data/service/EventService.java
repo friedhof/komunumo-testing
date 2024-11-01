@@ -37,17 +37,12 @@ interface EventService extends DSLContextGetter {
                 .orderBy(EVENT.DATE.asc())
                 .fetch()
                 .stream()
-                .map(this::mapEventRecord)
-                .filter(event -> event.duration() != null)
-                .filter(event -> {
-                    @SuppressWarnings("DataFlowIssue") // event date can't be null because of the where clause in the SQL statement
-                    final var endDate = event.date().plus(event.duration());
-                    return endDate.isAfter(LocalDateTime.now());
-                });
+                .map(EventService::mapEventRecord)
+                .filter(Event::isUpcoming);
     }
 
     @NotNull
-    private Event mapEventRecord(@NotNull final EventRecord eventRecord) {
+    private static Event mapEventRecord(@NotNull final EventRecord eventRecord) {
         final var duration = eventRecord.getDuration() == null ? null
                 : Duration.ofHours(eventRecord.getDuration().getHour())
                         .plusMinutes(eventRecord.getDuration().getMinute());
