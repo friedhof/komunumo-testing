@@ -40,9 +40,9 @@ interface EventService extends DSLContextGetter {
                 .map(this::mapEventRecord)
                 .filter(event -> event.duration() != null)
                 .filter(event -> {
-                    final var now = LocalDateTime.now();
+                    @SuppressWarnings("DataFlowIssue") // event date can't be null because of the where clause in the SQL statement
                     final var endDate = event.date().plus(event.duration());
-                    return endDate.isAfter(now);
+                    return endDate.isAfter(LocalDateTime.now());
                 });
     }
 
