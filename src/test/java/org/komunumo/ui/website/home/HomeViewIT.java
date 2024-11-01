@@ -18,7 +18,6 @@
 package org.komunumo.ui.website.home;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import org.jooq.DSLContext;
@@ -30,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static com.github.mvysny.kaributesting.v10.LocatorJ._click;
 import static com.github.mvysny.kaributesting.v10.LocatorJ._find;
 import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,7 +67,7 @@ class HomeViewIT extends KaribuTestBase {
 
         final var headings = _find(H3.class);
         assertEquals(1, headings.size());
-        assertEquals("Foobar 1", headings.get(0).getText());
+        assertEquals("Foobar 1", headings.getFirst().getText());
     }
 
 }
