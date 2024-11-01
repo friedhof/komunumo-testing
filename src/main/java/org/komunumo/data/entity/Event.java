@@ -28,7 +28,8 @@ public record Event(@Nullable Long id,
                     @NotNull String subtitle,
                     @NotNull String description,
                     @Nullable LocalDateTime date,
-                    @Nullable Duration duration) {
+                    @Nullable Duration duration,
+                    @NotNull String location) {
 
     public boolean isUpcoming() {
         if (date() == null || duration() == null) {

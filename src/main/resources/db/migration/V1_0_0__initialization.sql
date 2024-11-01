@@ -15,6 +15,8 @@ CREATE TABLE `event` (
     `date` DATETIME NULL,
     `duration` TIME NULL,
 
+    `location` VARCHAR(255) NOT NULL DEFAULT '',
+
     PRIMARY KEY (`id`)
 );
 

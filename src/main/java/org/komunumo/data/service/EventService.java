@@ -52,7 +52,8 @@ interface EventService extends DSLContextGetter {
                 eventRecord.getSubtitle(),
                 eventRecord.getDescription(),
                 eventRecord.getDate(),
-                duration);
+                duration,
+                eventRecord.getLocation());
     }
 
 }

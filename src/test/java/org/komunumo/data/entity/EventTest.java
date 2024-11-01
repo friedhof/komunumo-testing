@@ -31,7 +31,7 @@ class EventTest {
     @Test
     void testEvent() {
         final var testEvent = new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.of(2024, 10, 16, 18, 15), Duration.ofHours(1));
+                LocalDateTime.of(2024, 10, 16, 18, 15), Duration.ofHours(1), "Terra");
 
         assertEquals(1L, testEvent.id());
         assertEquals("Foobar", testEvent.title());
@@ -39,34 +39,35 @@ class EventTest {
         assertEquals("I am a description.", testEvent.description());
         assertEquals(LocalDateTime.of(2024, 10, 16, 18, 15), testEvent.date());
         assertEquals(Duration.ofHours(1), testEvent.duration());
+        assertEquals("Terra", testEvent.location());
     }
 
     @Test
     void isUpcomingWithNulls() {
         assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                null, null).isUpcoming());
+                null, null, "Terra").isUpcoming());
         assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                null, Duration.ofHours(1)).isUpcoming());
+                null, Duration.ofHours(1), "Terra").isUpcoming());
         assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.of(2099, 1, 1, 18, 15), null).isUpcoming());
+                LocalDateTime.of(2099, 1, 1, 18, 15), null, "Terra").isUpcoming());
     }
 
     @Test
     void isUpcomingFalse() {
         assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.of(2000, 1, 1, 18, 15), Duration.ofHours(1)).isUpcoming());
+                LocalDateTime.of(2000, 1, 1, 18, 15), Duration.ofHours(1), "Terra").isUpcoming());
         assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.now().minusMinutes(61), Duration.ofHours(1)).isUpcoming());
+                LocalDateTime.now().minusMinutes(61), Duration.ofHours(1), "Terra").isUpcoming());
     }
 
     @Test
     void isUpcomingTrue() {
         assertTrue(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.of(2099, 1, 1, 18, 15), Duration.ofHours(1)).isUpcoming());
+                LocalDateTime.of(2099, 1, 1, 18, 15), Duration.ofHours(1), "Terra").isUpcoming());
         assertTrue(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.now(), Duration.ofHours(1)).isUpcoming());
+                LocalDateTime.now(), Duration.ofHours(1), "Terra").isUpcoming());
         assertTrue(new Event(1L, "Foobar", "This is a test", "I am a description.",
-                LocalDateTime.now().minusMinutes(59), Duration.ofHours(1)).isUpcoming());
+                LocalDateTime.now().minusMinutes(59), Duration.ofHours(1), "Terra").isUpcoming());
     }
 
 }
