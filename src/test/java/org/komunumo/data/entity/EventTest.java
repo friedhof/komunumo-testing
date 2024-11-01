@@ -23,6 +23,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EventTest {
 
@@ -37,6 +39,34 @@ class EventTest {
         assertEquals("I am a description.", testEvent.description());
         assertEquals(LocalDateTime.of(2024, 10, 16, 18, 15), testEvent.date());
         assertEquals(Duration.ofHours(1), testEvent.duration());
+    }
+
+    @Test
+    void isUpcomingWithNulls() {
+        assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                null, null).isUpcoming());
+        assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                null, Duration.ofHours(1)).isUpcoming());
+        assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                LocalDateTime.of(2099, 1, 1, 18, 15), null).isUpcoming());
+    }
+
+    @Test
+    void isUpcomingFalse() {
+        assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                LocalDateTime.of(2000, 1, 1, 18, 15), Duration.ofHours(1)).isUpcoming());
+        assertFalse(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                LocalDateTime.now().minusMinutes(61), Duration.ofHours(1)).isUpcoming());
+    }
+
+    @Test
+    void isUpcomingTrue() {
+        assertTrue(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                LocalDateTime.of(2099, 1, 1, 18, 15), Duration.ofHours(1)).isUpcoming());
+        assertTrue(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                LocalDateTime.now(), Duration.ofHours(1)).isUpcoming());
+        assertTrue(new Event(1L, "Foobar", "This is a test", "I am a description.",
+                LocalDateTime.now().minusMinutes(59), Duration.ofHours(1)).isUpcoming());
     }
 
 }
