@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.komunumo.data.db.tables.records.EventRecord;
 import org.komunumo.data.entity.Event;
 import org.komunumo.data.service.getter.DSLContextGetter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -43,6 +45,11 @@ interface EventService extends DSLContextGetter {
 
     @NotNull
     private static Event mapEventRecord(@NotNull final EventRecord eventRecord) {
+        final Logger logger = LoggerFactory.getLogger(EventService.class);
+        logger.warn("*************************************************************");
+        logger.warn("*** The method 'EventService::mapEventRecord' was called! ***");
+        logger.warn("*************************************************************");
+
         final var duration = eventRecord.getDuration() == null ? null
                 : Duration.ofHours(eventRecord.getDuration().getHour())
                         .plusMinutes(eventRecord.getDuration().getMinute());
