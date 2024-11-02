@@ -26,6 +26,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class EventServiceIT {
@@ -54,6 +56,17 @@ class EventServiceIT {
         assertEquals(2, upcomingEvents.size());
         assertEquals(runningEvent, upcomingEvents.getFirst());
         assertEquals(upcomingEvent, upcomingEvents.get(1));
+
+        assertTrue(eventService.deleteEvent(previousEvent));
+        assertTrue(eventService.getEvent(previousEvent.id()).isEmpty());
+        assertFalse(eventService.deleteEvent(previousEvent));
+        assertTrue(eventService.deleteEvent(runningEvent));
+        assertTrue(eventService.getEvent(runningEvent.id()).isEmpty());
+        assertFalse(eventService.deleteEvent(runningEvent));
+        assertTrue(eventService.deleteEvent(upcomingEvent));
+        assertTrue(eventService.getEvent(upcomingEvent.id()).isEmpty());
+        assertFalse(eventService.deleteEvent(upcomingEvent));
+        assertEquals(0, eventService.upcomingEvents().toList().size());
     }
 
 }

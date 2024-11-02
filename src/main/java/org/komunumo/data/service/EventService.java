@@ -53,4 +53,8 @@ interface EventService extends DSLContextGetter {
                 .filter(Event::isUpcoming);
     }
 
+    default boolean deleteEvent(@NotNull final Event event) {
+        return dsl().delete(EVENT).where(EVENT.ID.eq(event.id())).execute() > 0;
+    }
+
 }
