@@ -107,7 +107,7 @@ WEBSITE_LOGO_MAX=10
 > The configuration option `WEBSITE_ABOUT_TEXT` is allowed to contain HTML code! So you can use paragraphs and links, if needed.
 
 > [!IMPORTANT]
-> The logo handling is very special: If you want to specify only one logo, just use the URL and set the `MIN` and `MAX` values to `0`. Done. But if you want *Komunumo* to pick a random logo on every request, you can specify a logo template which must contain a String format argument for a decimal integer representation (like `%02d` for a two-digit number in the example above). In addition, set the `MIN` and `MAX` values as needed. *Komunumo* will randomly pick a number between the provided `MIN` and `MAX` values and merge it with the provided `TEMPLATE` to create the image URL.
+> The logo handling is very special: If you want to specify only one logo, just use the URL and set the `MIN` and `MAX` values to `0`. Done. But if you want *Komunumo* to pick a random logo on every request, you can specify a logo template which must contain a String format argument for a decimal integer representation (like `%02d` for a two-digit number in the example above). In addition, set the `MIN` and `MAX` values as needed. *Komunumo* will randomly pick a number between the provided `MIN` and `MAX` values (both included) and merge it with the provided `TEMPLATE` to create the image URL.
 
 ## Build
 
