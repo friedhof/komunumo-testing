@@ -28,6 +28,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class Configuration {
 
     private String version;
+    private MetanetConfig metanet;
     private WebsiteConfig website;
 
     public String getVersion() {
@@ -36,6 +37,14 @@ public class Configuration {
 
     public void setVersion(@NotNull final String version) {
         this.version = version;
+    }
+
+    public MetanetConfig getMetanet() {
+        return metanet;
+    }
+
+    public void setMetanet(@NotNull final MetanetConfig metanet) {
+        this.metanet = metanet;
     }
 
     public WebsiteConfig getWebsite() {

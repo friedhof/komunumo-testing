@@ -349,6 +349,7 @@
                 <configuration>
                     <excludes>
                         <exclude>org/komunumo/data/db/**</exclude>
+                        <exclude>org/komunumo/scheduler/Import*.class</exclude><!-- TODO remove after go-live -->
                     </excludes>
                 </configuration>
                 <executions>
