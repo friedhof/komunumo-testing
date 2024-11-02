@@ -27,14 +27,14 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.jetbrains.annotations.NotNull;
 import org.komunumo.configuration.Configuration;
-import org.komunumo.data.service.DatabaseService;
+import org.komunumo.configuration.WebsiteConfig;
 
 public class WebsiteFooter extends Footer {
 
-    private final transient Configuration configuration;
+    private final transient WebsiteConfig websiteConfig;
 
-    public WebsiteFooter(@NotNull final DatabaseService databaseService) {
-        this.configuration = databaseService.configuration();
+    public WebsiteFooter(@NotNull final Configuration configuration) {
+        this.websiteConfig = configuration.getWebsite();
         setId("website-footer");
 
         add(
@@ -48,7 +48,7 @@ public class WebsiteFooter extends Footer {
         layout.setId("website-footer-about");
 
         final var title = new Div(new H2("About"));
-        final var about = new Html("<div>%s</div>".formatted(configuration.getWebsiteAboutText()));
+        final var about = new Html("<div>%s</div>".formatted(websiteConfig.aboutText()));
         layout.add(new HorizontalLayout(title, about));
 
         return layout;
@@ -59,11 +59,11 @@ public class WebsiteFooter extends Footer {
         layout.setId("website-footer-contact");
 
         final var title = new H2("Contact");
-        final var name = new Div(new Text(configuration.getWebsiteName()));
-        final var address = new Div(new Text(configuration.getWebsiteContactAddress()));
-        final var email = createEmail(configuration.getWebsiteContactEmail());
-        final var copyright = new Div(new Text(configuration.getWebsiteCopyright()));
-        layout.add(new HorizontalLayout(title, new Div(name, address, email, copyright)));
+        final var association = new Div(new Text(websiteConfig.association()));
+        final var address = new Div(new Text(websiteConfig.contactAddress()));
+        final var email = createEmail(websiteConfig.contactEmail());
+        final var copyright = new Div(new Text(websiteConfig.copyright()));
+        layout.add(new HorizontalLayout(title, new Div(association, address, email, copyright)));
 
         return layout;
     }

@@ -20,15 +20,15 @@ package org.komunumo.ui.website;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Header;
 import org.jetbrains.annotations.NotNull;
-import org.komunumo.data.service.DatabaseService;
+import org.komunumo.configuration.Configuration;
 
 public class WebsiteHeader extends Header {
 
-    public WebsiteHeader(@NotNull final DatabaseService databaseService) {
+    public WebsiteHeader(@NotNull final Configuration configuration) {
         setId("website-header");
 
         add(
-                new Anchor("/", new WebsiteLogo(databaseService)),
+                new Anchor("/", new WebsiteLogo(configuration)),
                 new WebsiteStats()
         );
     }

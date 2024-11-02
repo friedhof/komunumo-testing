@@ -21,19 +21,25 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class ConfigurationTest {
+class WebsiteConfigTest {
 
     @Autowired
     private Configuration configuration;
 
     @Test
-    void testConfiguration() {
-        assertNotNull(configuration);
-        assertFalse(configuration.getVersion().isBlank());
+    void testWebsiteConfig() {
+        final var websiteConfig = configuration.getWebsite();
+        assertEquals("Test about text", websiteConfig.aboutText());
+        assertEquals("Test Association Name", websiteConfig.association());
+        assertEquals("Test address", websiteConfig.contactAddress());
+        assertEquals("noreply@localhost", websiteConfig.contactEmail());
+        assertEquals("Test copyright text", websiteConfig.copyright());
+        assertEquals("http://localhost:8080/icons/icon-512x512.png", websiteConfig.logoTemplate());
+        assertEquals(0, websiteConfig.logoMin());
+        assertEquals(0, websiteConfig.logoMax());
+        assertEquals("http://localhost:8080", websiteConfig.url());
     }
-
 }

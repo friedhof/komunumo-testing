@@ -18,51 +18,31 @@
 package org.komunumo.configuration;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import java.util.Map;
+@org.springframework.context.annotation.Configuration
+@ConfigurationProperties(prefix = "komunumo")
+@EnableConfigurationProperties
+@SuppressWarnings("checkstyle:DesignForExtension") // Spring configurations can be subclassed by the Spring Framework
+public class Configuration {
 
-public final class Configuration {
+    private String version;
+    private WebsiteConfig website;
 
-    private final Map<String, String> data;
-
-    public Configuration(@NotNull final Map<String, String> data) {
-        this.data = data;
+    public String getVersion() {
+        return version;
     }
 
-    public String getWebsiteBaseUrl() {
-        return data.getOrDefault("website.url", "http://localhost:8080");
+    public void setVersion(@NotNull final String version) {
+        this.version = version;
     }
 
-    public String getWebsiteName() {
-        return data.getOrDefault("website.name", "");
+    public WebsiteConfig getWebsite() {
+        return website;
     }
 
-    public String getWebsiteContactAddress() {
-        return data.getOrDefault("website.contact.address", "");
+    public void setWebsite(@NotNull final WebsiteConfig website) {
+        this.website = website;
     }
-
-    public String getWebsiteContactEmail() {
-        return data.getOrDefault("website.contact.email", "noreply@localhost");
-    }
-
-    public String getWebsiteCopyright() {
-        return data.getOrDefault("website.copyright", "");
-    }
-
-    public String getWebsiteAboutText() {
-        return data.getOrDefault("website.about.text", "");
-    }
-
-    public String getWebsiteLogoTemplate() {
-        return data.getOrDefault("website.logo.template", "");
-    }
-
-    public int getWebsiteMinLogoNumber() {
-        return Integer.parseInt(data.getOrDefault("website.logo.min", "0"));
-    }
-
-    public int getWebsiteMaxLogoNumber() {
-        return Integer.parseInt(data.getOrDefault("website.logo.max", "0"));
-    }
-
 }

@@ -20,7 +20,7 @@ package org.komunumo.ui.website;
 import com.vaadin.flow.server.InvalidApplicationConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.komunumo.configuration.Configuration;
-import org.komunumo.data.service.DatabaseService;
+import org.komunumo.configuration.WebsiteConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,13 +33,13 @@ class WebsiteLogoTest {
     @Test
     void testRandomLogo() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getWebsiteLogoTemplate()).thenReturn("test_%02d.svg");
-        when(configuration.getWebsiteMinLogoNumber()).thenReturn(1);
-        when(configuration.getWebsiteMaxLogoNumber()).thenReturn(5);
-        final var databaseService = mock(DatabaseService.class);
-        when(databaseService.configuration()).thenReturn(configuration);
+        final var websiteConfig = mock(WebsiteConfig.class);
+        when(configuration.getWebsite()).thenReturn(websiteConfig);
+        when(websiteConfig.logoTemplate()).thenReturn("test_%02d.svg");
+        when(websiteConfig.logoMin()).thenReturn(1);
+        when(websiteConfig.logoMax()).thenReturn(5);
 
-        final var websiteLogo = new WebsiteLogo(databaseService);
+        final var websiteLogo = new WebsiteLogo(configuration);
         assertEquals("website-logo", websiteLogo.getClassName());
         assertEquals("Website Logo", websiteLogo.getAlt().orElseThrow());
         assertTrue(websiteLogo.getSrc().matches("test_\\d{2}\\.svg"));
@@ -48,13 +48,13 @@ class WebsiteLogoTest {
     @Test
     void testStaticLogo() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getWebsiteLogoTemplate()).thenReturn("test.svg");
-        when(configuration.getWebsiteMinLogoNumber()).thenReturn(0);
-        when(configuration.getWebsiteMaxLogoNumber()).thenReturn(0);
-        final var databaseService = mock(DatabaseService.class);
-        when(databaseService.configuration()).thenReturn(configuration);
+        final var websiteConfig = mock(WebsiteConfig.class);
+        when(configuration.getWebsite()).thenReturn(websiteConfig);
+        when(websiteConfig.logoTemplate()).thenReturn("test.svg");
+        when(websiteConfig.logoMin()).thenReturn(0);
+        when(websiteConfig.logoMax()).thenReturn(0);
 
-        final var websiteLogo = new WebsiteLogo(databaseService);
+        final var websiteLogo = new WebsiteLogo(configuration);
         assertEquals("website-logo", websiteLogo.getClassName());
         assertEquals("Website Logo", websiteLogo.getAlt().orElseThrow());
         assertTrue(websiteLogo.getSrc().matches("test\\.svg"));
@@ -63,42 +63,42 @@ class WebsiteLogoTest {
     @Test
     void testTemplateBlank() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getWebsiteLogoTemplate()).thenReturn(" ");
-        when(configuration.getWebsiteMinLogoNumber()).thenReturn(0);
-        when(configuration.getWebsiteMaxLogoNumber()).thenReturn(0);
-        final var databaseService = mock(DatabaseService.class);
-        when(databaseService.configuration()).thenReturn(configuration);
+        final var websiteConfig = mock(WebsiteConfig.class);
+        when(configuration.getWebsite()).thenReturn(websiteConfig);
+        when(websiteConfig.logoTemplate()).thenReturn(" ");
+        when(websiteConfig.logoMin()).thenReturn(0);
+        when(websiteConfig.logoMax()).thenReturn(0);
 
         final var exception = assertThrows(InvalidApplicationConfigurationException.class,
-                () -> new WebsiteLogo(databaseService));
+                () -> new WebsiteLogo(configuration));
         assertEquals("Missing website logo URL template!", exception.getMessage());
     }
 
     @Test
     void testTemplateNull() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getWebsiteLogoTemplate()).thenReturn(null);
-        when(configuration.getWebsiteMinLogoNumber()).thenReturn(0);
-        when(configuration.getWebsiteMaxLogoNumber()).thenReturn(0);
-        final var databaseService = mock(DatabaseService.class);
-        when(databaseService.configuration()).thenReturn(configuration);
+        final var websiteConfig = mock(WebsiteConfig.class);
+        when(configuration.getWebsite()).thenReturn(websiteConfig);
+        when(websiteConfig.logoTemplate()).thenReturn(null);
+        when(websiteConfig.logoMin()).thenReturn(0);
+        when(websiteConfig.logoMax()).thenReturn(0);
 
         final var exception = assertThrows(InvalidApplicationConfigurationException.class,
-                () -> new WebsiteLogo(databaseService));
+                () -> new WebsiteLogo(configuration));
         assertEquals("Missing website logo URL template!", exception.getMessage());
     }
 
     @Test
     void testMaxLogoNumberLowerThanMinLogoNumber() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getWebsiteLogoTemplate()).thenReturn("test_%02d.svg");
-        when(configuration.getWebsiteMinLogoNumber()).thenReturn(1);
-        when(configuration.getWebsiteMaxLogoNumber()).thenReturn(0);
-        final var databaseService = mock(DatabaseService.class);
-        when(databaseService.configuration()).thenReturn(configuration);
+        final var websiteConfig = mock(WebsiteConfig.class);
+        when(configuration.getWebsite()).thenReturn(websiteConfig);
+        when(websiteConfig.logoTemplate()).thenReturn("test_%02d.svg");
+        when(websiteConfig.logoMin()).thenReturn(1);
+        when(websiteConfig.logoMax()).thenReturn(0);
 
         final var exception = assertThrows(InvalidApplicationConfigurationException.class,
-                () -> new WebsiteLogo(databaseService));
+                () -> new WebsiteLogo(configuration));
         assertEquals("Max website logo number must be higher than min website logo number!", exception.getMessage());
     }
 

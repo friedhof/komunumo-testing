@@ -15,23 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.komunumo.data.service;
+package org.komunumo.configuration;
 
-import org.komunumo.configuration.Configuration;
-import org.komunumo.data.service.getter.DSLContextGetter;
-
-import java.util.Collections;
-import java.util.HashMap;
-
-import static org.komunumo.data.db.tables.Configuration.CONFIGURATION;
-
-interface ConfigurationService extends DSLContextGetter {
-
-    default Configuration loadConfigurationFromDatabase() {
-        final var configurationData = new HashMap<String, String>();
-        dsl().selectFrom(CONFIGURATION)
-                .forEach(configurationRecord -> configurationData.put(configurationRecord.getConfKey(), configurationRecord.getConfValue()));
-        return new Configuration(Collections.unmodifiableMap(configurationData));
-    }
-
-}
+public record WebsiteConfig(String aboutText, String association, String contactAddress, String contactEmail,
+                            String copyright, String logoTemplate, int logoMin, int logoMax, String url) { }

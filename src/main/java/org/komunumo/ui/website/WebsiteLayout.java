@@ -23,18 +23,18 @@ import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.router.RouterLayout;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.komunumo.data.service.DatabaseService;
+import org.komunumo.configuration.Configuration;
 
 public final class WebsiteLayout extends Div implements RouterLayout {
 
     private final Main main;
 
-    public WebsiteLayout(@NotNull final DatabaseService databaseService) {
+    public WebsiteLayout(@NotNull final Configuration configuration) {
         setId("website-container");
         main = new Main();
-        add(new WebsiteHeader(databaseService));
+        add(new WebsiteHeader(configuration));
         add(main);
-        add(new WebsiteFooter(databaseService));
+        add(new WebsiteFooter(configuration));
     }
 
     @Override

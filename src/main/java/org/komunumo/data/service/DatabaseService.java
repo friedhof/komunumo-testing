@@ -19,30 +19,16 @@ package org.komunumo.data.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
-import org.komunumo.configuration.Configuration;
-import org.komunumo.data.service.getter.ConfigurationGetter;
 import org.komunumo.data.service.getter.DSLContextGetter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DatabaseService implements DSLContextGetter, ConfigurationGetter, ConfigurationService, EventService {
+public class DatabaseService implements DSLContextGetter, EventService {
 
     private final DSLContext dsl;
 
-    private final Configuration configuration;
-
     public DatabaseService(@NotNull final DSLContext dsl) {
         this.dsl = dsl;
-        this.configuration = loadConfigurationFromDatabase();
-    }
-
-    /**
-     * Get the {@link Configuration}.
-     * @return the {@link Configuration}
-     */
-    @Override
-    public Configuration configuration() {
-        return configuration;
     }
 
     /**

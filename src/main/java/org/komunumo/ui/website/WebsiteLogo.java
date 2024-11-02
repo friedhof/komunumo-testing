@@ -20,7 +20,7 @@ package org.komunumo.ui.website;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.server.InvalidApplicationConfigurationException;
 import org.jetbrains.annotations.NotNull;
-import org.komunumo.data.service.DatabaseService;
+import org.komunumo.configuration.Configuration;
 
 import java.io.Serial;
 import java.util.Random;
@@ -34,11 +34,11 @@ public class WebsiteLogo extends Image {
     private final int maxLogoNumber;
     private final boolean randomizeLogo;
 
-    public WebsiteLogo(final @NotNull DatabaseService databaseService) {
-        final var configuration = databaseService.configuration();
-        this.logoUrlTemplate = configuration.getWebsiteLogoTemplate();
-        this.minLogoNumber = configuration.getWebsiteMinLogoNumber();
-        this.maxLogoNumber = configuration.getWebsiteMaxLogoNumber();
+    public WebsiteLogo(@NotNull final Configuration configuration) {
+        final var websiteConfig = configuration.getWebsite();
+        this.logoUrlTemplate = websiteConfig.logoTemplate();
+        this.minLogoNumber = websiteConfig.logoMin();
+        this.maxLogoNumber = websiteConfig.logoMax();
         this.randomizeLogo = minLogoNumber < maxLogoNumber;
 
         if (logoUrlTemplate == null || logoUrlTemplate.isBlank()) {
