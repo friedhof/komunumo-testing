@@ -22,11 +22,25 @@ import org.komunumo.data.entity.Event;
 import org.komunumo.data.service.getter.DSLContextGetter;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.komunumo.data.db.tables.Event.EVENT;
 
 interface EventService extends DSLContextGetter {
+
+    default void storeEvent(@NotNull Event event) {
+        final var eventRecord = dsl().newRecord(EVENT);
+        eventRecord.from(event);
+        eventRecord.store();
+    }
+
+    @NotNull
+    default Optional<Event> getEvent(@NotNull final Long id) {
+        return dsl().selectFrom(EVENT)
+                .where(EVENT.ID.eq(id))
+                .fetchOptionalInto(Event.class);
+    }
 
     @NotNull
     default Stream<Event> upcomingEvents() {
