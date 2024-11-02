@@ -75,6 +75,18 @@ MySQL and MariaDB have a possible silent truncation problem with the `GROUP_CONC
 DB_URL=jdbc:mariadb://localhost:3306/komunumo?serverTimezone\=Europe/Zurich&allowMultiQueries=true
 ```
 
+### Matenet Database
+
+The old [website](https://www.jug.ch/) runs on a server at [Metanet](https://www.metanet.ch/). All the existing data needs to be imported to *Komunumo* once at go-live. This is done by querying the old database. To run the import, the following configurations need to be set:
+
+```
+METANET_DATABASE_URL=jdbc:mariadb://remotehost:3306/database?serverTimezone\=Europe/Zurich&allowMultiQueries=true
+METANET_DATABASE_USER=janedoe
+METANET_DATABASE_PASSWORD=verysecred
+```
+
+When these settings are not blank, the import will start automatically ten seconds after the launch of *Komunumo*. 
+
 ## Build
 
 ### Maven
