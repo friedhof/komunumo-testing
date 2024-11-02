@@ -68,6 +68,8 @@ class HomeViewIT extends KaribuTestBase {
         final var headings = _find(H3.class);
         assertEquals(1, headings.size());
         assertEquals("Foobar 1", headings.getFirst().getText());
+
+        assertEquals(4, dsl.deleteFrom(EVENT).where(EVENT.ID.in(1L, 2L, 3L, 4L)).execute());
     }
 
 }
