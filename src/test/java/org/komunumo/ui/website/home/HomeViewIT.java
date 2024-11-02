@@ -26,8 +26,8 @@ import org.komunumo.data.service.DatabaseService;
 import org.komunumo.ui.KaribuTestBase;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ._find;
 import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
@@ -47,11 +47,11 @@ class HomeViewIT extends KaribuTestBase {
         dsl.insertInto(EVENT, EVENT.ID, EVENT.TITLE, EVENT.SUBTITLE, EVENT.DESCRIPTION,
                         EVENT.DATE, EVENT.DURATION, EVENT.LOCATION)
                 .values(1L, "Foobar 1", "This is a test", "This is event number one.",
-                        LocalDateTime.of(2099, 1, 1, 18, 15), LocalTime.of(1, 30), "Terra")
+                        LocalDateTime.of(2099, 1, 1, 18, 15), Duration.ofMinutes(90), "Terra")
                 .values(2L, "Foobar 2", "This is a test", "This is event number two.",
                         LocalDateTime.of(2099, 1, 1, 18, 15), null, "Terra")
                 .values(3L, "Foobar 3", "This is a test", "This is event number three.",
-                        null, LocalTime.of(1, 30), "Terra")
+                        null, Duration.ofMinutes(90), "Terra")
                 .values(4L, "Foobar 4", "This is a test", "This is event number four.",
                         null, null, "Terra")
                 .execute();

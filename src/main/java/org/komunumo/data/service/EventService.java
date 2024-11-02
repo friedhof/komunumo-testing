@@ -18,11 +18,9 @@
 package org.komunumo.data.service;
 
 import org.jetbrains.annotations.NotNull;
-import org.komunumo.data.db.tables.records.EventRecord;
 import org.komunumo.data.entity.Event;
 import org.komunumo.data.service.getter.DSLContextGetter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
@@ -37,23 +35,8 @@ interface EventService extends DSLContextGetter {
                 .orderBy(EVENT.DATE.asc())
                 .fetch()
                 .stream()
-                .map(EventService::mapEventRecord)
+                .map((eventRecord -> eventRecord.into(Event.class)))
                 .filter(Event::isUpcoming);
-    }
-
-    @NotNull
-    private static Event mapEventRecord(@NotNull final EventRecord eventRecord) {
-        final var duration = eventRecord.getDuration() == null ? null
-                : Duration.ofHours(eventRecord.getDuration().getHour())
-                        .plusMinutes(eventRecord.getDuration().getMinute());
-        return new Event(
-                eventRecord.getId(),
-                eventRecord.getTitle(),
-                eventRecord.getSubtitle(),
-                eventRecord.getDescription(),
-                eventRecord.getDate(),
-                duration,
-                eventRecord.getLocation());
     }
 
 }
