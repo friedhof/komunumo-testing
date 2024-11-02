@@ -24,7 +24,6 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.jetbrains.annotations.NotNull;
 import org.komunumo.configuration.Configuration;
 import org.komunumo.configuration.WebsiteConfig;
@@ -44,28 +43,28 @@ public class WebsiteFooter extends Footer {
     }
 
     private Component createAbout() {
-        final var layout = new HorizontalLayout();
-        layout.setId("website-footer-about");
+        final var container = new Div();
+        container.setId("website-footer-about");
 
         final var title = new Div(new H2("About"));
         final var about = new Html("<div>%s</div>".formatted(websiteConfig.aboutText()));
-        layout.add(new HorizontalLayout(title, about));
+        container.add(new Div(title, about));
 
-        return layout;
+        return container;
     }
 
     private Component createContact() {
-        final var layout = new HorizontalLayout();
-        layout.setId("website-footer-contact");
+        final var container = new Div();
+        container.setId("website-footer-contact");
 
         final var title = new H2("Contact");
         final var association = new Div(new Text(websiteConfig.association()));
         final var address = new Div(new Text(websiteConfig.contactAddress()));
         final var email = createEmail(websiteConfig.contactEmail());
         final var copyright = new Div(new Text(websiteConfig.copyright()));
-        layout.add(new HorizontalLayout(title, new Div(association, address, email, copyright)));
+        container.add(new Div(title, new Div(association, address, email, copyright)));
 
-        return layout;
+        return container;
     }
 
     private Component createEmail(@NotNull final String email) {
