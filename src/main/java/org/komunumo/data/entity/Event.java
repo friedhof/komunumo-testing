@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public record Event(@Nullable Long id,
+public record Event(@NotNull Long id,
                     @NotNull String title,
                     @NotNull String subtitle,
                     @NotNull String description,

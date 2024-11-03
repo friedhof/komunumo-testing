@@ -18,6 +18,7 @@
 package org.komunumo.data.service;
 
 import org.jetbrains.annotations.NotNull;
+import org.komunumo.data.db.tables.records.EventRecord;
 import org.komunumo.data.entity.Event;
 import org.komunumo.data.service.getter.DSLContextGetter;
 
@@ -30,7 +31,13 @@ import static org.komunumo.data.db.tables.Event.EVENT;
 interface EventService extends DSLContextGetter {
 
     default void storeEvent(@NotNull Event event) {
-        final var eventRecord = dsl().newRecord(EVENT);
+        final EventRecord eventRecord;
+        if (event.id() == 0) {
+            eventRecord = dsl().newRecord(EVENT);
+        } else {
+            final var result = dsl().fetchOne(EVENT, EVENT.ID.eq(event.id()));
+            eventRecord = result != null ? result : dsl().newRecord(EVENT);
+        }
         eventRecord.from(event);
         eventRecord.store();
     }

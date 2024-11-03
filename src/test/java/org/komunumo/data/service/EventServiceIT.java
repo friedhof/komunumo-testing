@@ -69,4 +69,15 @@ class EventServiceIT {
         assertEquals(0, eventService.upcomingEvents().toList().size());
     }
 
+    @Test
+    void storeEventWithId0() {
+        final var newEvent = new Event(0L, "Test with 0", "This is a test event", "This is an event with ID set to 0.",
+                null, null, "Terra");
+
+        eventService.storeEvent(newEvent);
+        final var storedEvent = eventService.getEvent(1L).orElseThrow();
+
+        assertEquals(1L, storedEvent.id());
+        assertEquals("Test with 0", storedEvent.title());
+    }
 }
