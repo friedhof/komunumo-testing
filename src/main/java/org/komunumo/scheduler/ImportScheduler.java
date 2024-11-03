@@ -40,6 +40,8 @@ import java.time.format.DateTimeParseException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.lang.String.format;
+
 @Service
 @SuppressWarnings({"java:S1192", "java:S2629", "SqlResolve"}) // this class will be deleted after go-live
 public final class ImportScheduler {
@@ -140,16 +142,47 @@ public final class ImportScheduler {
                         LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"))
                 );
             } catch (final DateTimeParseException e2) {
-                throw new ImportException(String.format("Can't parse date (%s) and time(%s)", eventDate, startTime), e2);
+                throw new ImportException(format("Can't parse date (%s) and time(%s)", eventDate, startTime), e2);
             }
         }
     }
 
     @Nullable
     private static Duration getDuration(@NotNull final String startTime, @NotNull final String endTime) {
+        if (startTime.equals(endTime)) {
+            return Duration.ZERO;
+        }
+
         final var start = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
         final var end = LocalTime.parse(endTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
-        return Duration.between(start, end);
+        if (start.isBefore(end)) {
+            return Duration.between(start, end);
+        }
+
+        int startHour = Integer.parseInt(startTime.split(":")[0]);
+        final int startMinute = Integer.parseInt(startTime.split(":")[1]);
+        final int startSecond = Integer.parseInt(startTime.split(":")[2]);
+
+        int endHour = Integer.parseInt(endTime.split(":")[0]);
+        final int endMinute = Integer.parseInt(endTime.split(":")[1]);
+        final int endSecond = Integer.parseInt(endTime.split(":")[2]);
+
+        if (endHour == 0) {
+            endHour = 24;
+        }
+
+        if (endHour > startHour) {
+            endHour = endHour - startHour;
+            startHour = 0;
+        }
+
+        if (endHour > startHour && endHour < 24) {
+            final var newStart = LocalTime.of(startHour, startMinute, startSecond);
+            final var newEnd = LocalTime.of(endHour, endMinute, endSecond);
+            return Duration.between(newStart, newEnd);
+        }
+
+        throw new IllegalArgumentException(format("Invalid combination of time values (start='%s', end='%s'", startTime, endTime));
     }
 
     static class ImportException extends RuntimeException {
