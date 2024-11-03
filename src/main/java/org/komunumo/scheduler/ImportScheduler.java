@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@SuppressWarnings({"java:S1192", "java:S2629", "SqlResolve"}) // this class will be deleted after go-live
 public final class ImportScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportScheduler.class);
@@ -77,29 +78,39 @@ public final class ImportScheduler {
 
     private void importEvents(@NotNull final Connection connection)
             throws SQLException {
-        final var counter = new AtomicInteger(0);
+        final var counterNew = new AtomicInteger(0);
+        final var counterUpdated = new AtomicInteger(0);
+        final var counterEquals = new AtomicInteger(0);
         try (var statement = connection.createStatement()) {
             final var result = statement.executeQuery("""
                             SELECT id, ort, room, travel_instructions, datum, startzeit, zeitende, titel, untertitel, agenda, abstract, sichtbar,
                             verantwortung, urldatei, url_webinar, video_id, anm_formular FROM events_neu
                             WHERE sichtbar='ja' OR datum >= '2021-01-01' ORDER BY id""");
             while (result.next()) {
-                if (databaseService.getEvent(result.getLong("id")).isEmpty()) {
-                    final var event = new Event(
-                            result.getLong("id"),
-                            getPlainText(getEmptyForNull(result.getString("titel"))),
-                            getPlainText(getEmptyForNull(result.getString("untertitel"))),
-                            getEmptyForNull(result.getString("abstract")),
-                            getDateTime(result.getString("datum"), result.getString("startzeit")),
-                            getDuration(result.getString("startzeit"), result.getString("zeitende")),
-                            getEmptyForNull(result.getString("ort")));
+                final var event = new Event(
+                        result.getLong("id"),
+                        getPlainText(getEmptyForNull(result.getString("titel"))),
+                        getPlainText(getEmptyForNull(result.getString("untertitel"))),
+                        getEmptyForNull(result.getString("abstract")),
+                        getDateTime(result.getString("datum"), result.getString("startzeit")),
+                        getDuration(result.getString("startzeit"), result.getString("zeitende")),
+                        getEmptyForNull(result.getString("ort")));
+                final var optionalEvent = databaseService.getEvent(result.getLong("id"));
+                if (optionalEvent.isEmpty()) {
                     databaseService.storeEvent(event);
-                    counter.incrementAndGet();
-                    LOGGER.info("Event imported and stored: {}", event);
+                    counterNew.incrementAndGet();
+                    LOGGER.info("New event with ID {} imported.", event.id());
+                } else if (optionalEvent.get().equals(event)) {
+                    counterEquals.incrementAndGet();
+                } else {
+                    databaseService.storeEvent(event);
+                    counterUpdated.incrementAndGet();
+                    LOGGER.info("Existing event with ID {} updated.", event.id());
                 }
             }
         }
-        LOGGER.info("{} new events imported.", counter.get());
+        LOGGER.info("{} new events imported, {} events updated, and {} equal events skipped.",
+                counterNew.get(), counterUpdated.get(), counterEquals.get());
     }
 
     @NotNull
