@@ -63,3 +63,8 @@ error-screenshots/
 # Files used by Docker and MariaDB tu run the database locally
 /.env
 /.mariadb/data
+
+# Temporary Codecov files
+codecov
+codecov.SHA256SUM
+codecov.SHA256SUM.sig
